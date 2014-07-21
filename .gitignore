@@ -1,4 +1,5 @@
 /.idea/
+/report/
 /bootstrap/compiled.php
 /vendor
 composer.phar
