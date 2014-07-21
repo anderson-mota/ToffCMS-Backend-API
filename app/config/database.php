@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -55,31 +55,32 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'hmlv_website',
-			'username'  => 'root',
-			'password'  => '',
+			'database'  => 'homestead',
+			'username'  => 'homestead',
+			'password'  => 'secret',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
-			'prefix'    => 'hm_',
+			'prefix'    => '',
 		),
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'database' => 'homestead',
+			'username' => 'homestead',
+			'password' => 'secret',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
+			'port'     => '5432',
 		),
 
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',
-			'database' => 'database',
-			'username' => 'root',
-			'password' => '',
+			'database' => 'homestead',
+			'username' => 'homestead',
+			'password' => 'secret',
 			'prefix'   => '',
 		),
 
