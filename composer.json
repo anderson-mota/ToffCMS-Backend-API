@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"orchestra/imagine": "2.3.*@dev"
+		"orchestra/imagine": "2.3.*@dev",
+		"phpunit/php-code-coverage": "2.0.9"
 	},
 	"autoload": {
 		"classmap": [
