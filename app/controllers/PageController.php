@@ -1,5 +1,7 @@
 <?php
 
+use App\Libraries\ResponseJson;
+
 class PageController extends \BaseController {
 
 	/**
@@ -12,7 +14,7 @@ class PageController extends \BaseController {
 		$page = Page::with('author')
 					->get();
 
-		return static::response('pages', $page->toArray());
+		return ResponseJson::success('pages', $page->toArray());
 	}
 
 
@@ -27,7 +29,7 @@ class PageController extends \BaseController {
 		$validator = Page::validate(Input::all());
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return ResponseJson::error('message', $validator->messages()->all());
 		}
 
 		$page = new Page;
@@ -40,7 +42,7 @@ class PageController extends \BaseController {
 
 		$page->save();
 
-		return static::response('page', $page->toArray());
+		return ResponseJson::success('page', $page->toArray());
 	}
 
 
@@ -59,7 +61,7 @@ class PageController extends \BaseController {
 					->take(1)
 					->get();
 
-		return static::response('pages', $page->toArray());
+		return ResponseJson::success('pages', $page->toArray());
 	}
 
 
@@ -76,14 +78,14 @@ class PageController extends \BaseController {
 		// Does the page exist?
 		if ($page->exists() === false)
 		{
-			return static::response('message', 'Page with this ID doesn\'t exist.', true);
+			return ResponseJson::error('message', 'Page with this ID doesn\'t exist.');
 		}
 
 		// Validate the input
 		$validator = Page::validate(Input::all(), 'update');
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return ResponseJson::error('message', $validator->messages()->all());
 		}
 
 		// Set the input
@@ -96,7 +98,7 @@ class PageController extends \BaseController {
 		// Save
 		$page->save();
 
-		return static::response('page', $page->toArray());
+		return ResponseJson::success('page', $page->toArray());
 	}
 
 
@@ -109,7 +111,7 @@ class PageController extends \BaseController {
 	public function destroy($id)
 	{
 		Page::destroy($id);
-		return static::response('status', true);
+		return ResponseJson::success('status', true);
 	}
 
 

@@ -1,5 +1,7 @@
 <?php
 
+use \app\libraries\ResponseJson;
+
 class GalleryController extends \BaseController {
 
 	/**
@@ -13,7 +15,7 @@ class GalleryController extends \BaseController {
 				$query->orderBy('order_id');
 			}))->get();
 
-		return static::response('galleries', $galleries->toArray());
+		return ResponseJson::success('galleries', $galleries->toArray());
 	}
 
 
@@ -30,14 +32,14 @@ class GalleryController extends \BaseController {
 		$validator = $gallery->validate(Input::all());
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return ResponseJson::error('message', $validator->messages()->all());
 		}
 
 		$gallery->title = Input::get('title');
 		$gallery->slug = Input::get('slug');
 		$gallery->save();
 
-		return static::response('gallery', $gallery->toArray());
+		return ResponseJson::success('gallery', $gallery->toArray());
 	}
 
 
@@ -58,10 +60,10 @@ class GalleryController extends \BaseController {
 
 		if ($gallery === NULL)
 		{
-			return static::response('message', 'Gallery with this slug doesn\'t exist.', true);
+			return ResponseJson::error('message', 'Gallery with this slug doesn\'t exist.');
 		}
 
-		return static::response('gallery', $gallery->toArray());
+		return ResponseJson::success('gallery', $gallery->toArray());
 	}
 
 
@@ -78,14 +80,14 @@ class GalleryController extends \BaseController {
 		// Does the item exist?
 		if ($gallery === null || $gallery->exists() === false)
 		{
-			return static::response('message', 'Gallery with this ID doesn\'t exist.', true);
+			return ResponseJson::error('message', 'Gallery with this ID doesn\'t exist.');
 		}
 
 		// Validate the input
 		$validator = $gallery->validate(Input::all());
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return ResponseJson::error('message', $validator->messages()->all());
 		}
 
 		// Set the input
@@ -95,7 +97,7 @@ class GalleryController extends \BaseController {
 		// Save
 		$gallery->save();
 
-		return static::response('gallery', $gallery->toArray());
+		return ResponseJson::success('gallery', $gallery->toArray());
 	}
 
 
@@ -108,7 +110,7 @@ class GalleryController extends \BaseController {
 	public function destroy($id)
 	{
 		Gallery::destroy($id);
-		return static::response('status', true);
+		return ResponseJson::success('status', true);
 	}
 
 

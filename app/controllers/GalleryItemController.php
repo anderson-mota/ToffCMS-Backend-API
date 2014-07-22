@@ -1,5 +1,7 @@
 <?php
 
+use \app\libraries\ResponseJson;
+
 class GalleryItemController extends \BaseController {
 
 	/**
@@ -34,7 +36,7 @@ class GalleryItemController extends \BaseController {
 
 		if ($gallery === NULL)
 		{
-			return static::response('message', array('Gallery with the given ID doesn\'t exist.'), true);
+			return ResponseJson::error('message', array('Gallery with the given ID doesn\'t exist.'));
 		}
 
 		$destinationPath = Config::get('assets.images.paths.input');
@@ -42,7 +44,7 @@ class GalleryItemController extends \BaseController {
 
 		if (!is_a($file, 'Symfony\Component\HttpFoundation\File\UploadedFile'))
 		{
-			return static::response('message', array('Unknown error occurred.'), true);
+			return ResponseJson::error('message', array('Unknown error occurred.'));
 		}
 
 		$validator = Validator::make(
@@ -52,7 +54,7 @@ class GalleryItemController extends \BaseController {
 
 		if ($validator->passes() === false)
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return ResponseJson::error('message', $validator->messages()->all());
 		}
 
 		$filename = str_random(8) . '.' . $file->guessExtension();
@@ -62,20 +64,18 @@ class GalleryItemController extends \BaseController {
 			$filename
 		);
 
-		if ($status)
+		if (!$status)
 		{
-			$item = new Gallery_Item;
-			$item->gallery_id = $gallery->id;
-			$item->content = $filename;
-			$item->type = 'image';
-			$item->save();
+			return ResponseJson::error('message', 'File upload failed');
+		}
 
-		   return static::response('item', $item->toArray());
-		}
-		else
-		{
-		   return static::response('message', 'File upload failed', true);
-		}
+		$item = new Gallery_Item;
+		$item->gallery_id = $gallery->id;
+		$item->content = $filename;
+		$item->type = 'image';
+		$item->save();
+
+		return ResponseJson::success('item', $item->toArray());
 	}
 
 
@@ -112,7 +112,7 @@ class GalleryItemController extends \BaseController {
 	public function destroy($id)
 	{
 		Gallery_Item::destroy($id);
-		return static::response('status', true);
+		return ResponseJson::success('status', true);
 	}
 
 
@@ -123,7 +123,7 @@ class GalleryItemController extends \BaseController {
 	public function saveOrder()
 	{
 		Gallery_Item::updateOrder(Input::get('data'));
-		return static::response('message', 'Successfully saved the order');
+		return ResponseJson::success('message', 'Successfully saved the order');
 	}
 
 

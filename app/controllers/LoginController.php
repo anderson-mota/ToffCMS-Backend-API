@@ -1,5 +1,7 @@
 <?php
 
+use App\Libraries\ResponseJson;
+
 class LoginController extends \BaseController {
 
 	/**
@@ -22,7 +24,7 @@ class LoginController extends \BaseController {
 		// Is this a successful authorization?
 		if (Auth::attempt($userdata, false, false) === false)
 		{
-			return static::response('message', 'Wrong email/password', true);
+			return ResponseJson::error('message', 'Wrong email/password');
 		}
 
 		// Get the userdata
@@ -32,7 +34,7 @@ class LoginController extends \BaseController {
 					->toArray();
 
 		// Return the api key
-		return static::response('user', $user[0]);
+		return ResponseJson::success('user', $user[0]);
 	}
 
 }

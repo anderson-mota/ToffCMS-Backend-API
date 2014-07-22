@@ -1,5 +1,7 @@
 <?php
 
+Use app\libraries\ResponseJson;
+
 class SettingController extends \BaseController {
 
 	/**
@@ -19,9 +21,6 @@ class SettingController extends \BaseController {
 			$return[$setting->key] = $setting->value;
 		}
 
-		return static::response('settings', $return);
-
+		return ResponseJson::success('settings', $return);
 	}
-
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+use app\libraries\ResponseJson;
+
 class UserController extends \BaseController {
 
 	/**
@@ -34,7 +36,7 @@ class UserController extends \BaseController {
 	{
 		$user = User::find($id);
 
-		return static::response('user', $user->toArray());
+		return ResponseJson::success('user', $user->toArray());
 	}
 
 
