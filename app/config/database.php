@@ -72,7 +72,7 @@ return array(
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
-			'port'     => '5432',
+			'port'     => (php_sapi_name() === 'cli') ? '54320' : '5432',
 		),
 
 		'sqlsrv' => array(

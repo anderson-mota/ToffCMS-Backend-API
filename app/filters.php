@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) Redirect::guest('login');
 });
 
 
@@ -48,7 +48,7 @@ Route::filter('auth.apiKey', function ()
 {
 	if (User::validAPIKey(Input::get('api_key'), Input::get('user_id')) === FALSE)
 	{
-		return App::abort(401);
+		App::abort(401);
 	}
 });
 
@@ -65,7 +65,7 @@ Route::filter('auth.apiKey', function ()
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('/');
+	if (Auth::check()) Redirect::to('/');
 });
 
 /*
