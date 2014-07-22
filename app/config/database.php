@@ -73,7 +73,7 @@ return array(
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
-			'port'     => '54320',
+			'port'     => '5432',
 		),
 
 		'sqlsrv' => array(
