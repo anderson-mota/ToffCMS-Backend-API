@@ -22,7 +22,8 @@ class GalleryTableSeeder extends Seeder {
 		Gallery_Item::create(array(
 			'type' => 'video',
 			'content' => 'test',
-			'gallery_id' => 1
+			'gallery_id' => DB::getPdo()->lastInsertId(),
+			'order_id' => 1,
 		));
 	}
 
