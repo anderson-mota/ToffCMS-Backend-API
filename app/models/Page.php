@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Class Page
+ *
+ * @property $id
+ * @property $title
+ * @property $slug
+ * @property $body
+ * @property $status
+ * @property $language
+ * @property $author_id
+ */
 class Page extends Eloquent {
 
 	protected $table = 'pages';
@@ -54,4 +65,23 @@ class Page extends Eloquent {
 		return (int) $value;
 	}
 
+	/**
+	 * @param string|null $action
+	 * @return void
+	 */
+	public function populate($action = 'insert')
+	{
+		$this->title = Input::get('title');
+		$this->slug = Input::get('slug');
+		$this->body = Input::get('body');
+
+		if ($action == 'insert') {
+			$this->status = Input::get('status', 'draft');
+			$this->language = Input::get('language', 'en');
+			$this->author_id = User::getCurrent()->id;
+		} else {
+			$this->status = Input::get('status');
+			$this->language = Input::get('language');
+		}
+	}
 }

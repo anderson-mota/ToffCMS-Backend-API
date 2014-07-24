@@ -8,7 +8,7 @@
  * @author Anderson Mota <anderson.mota@lqdi.net>
  */
 
-namespace app\libraries;
+namespace App\Libraries;
 
 
 class ResponseJson extends \Response {

@@ -33,12 +33,7 @@ class PageController extends \BaseController {
 		}
 
 		$page = new Page;
-		$page->title = Input::get('title');
-		$page->slug = Input::get('slug');
-		$page->body = Input::get('body');
-		$page->status = Input::get('status', 'draft');
-		$page->language = Input::get('language', 'en');
-		$page->author_id = User::getCurrent()->id;
+		$page->populate('insert');
 
 		$page->save();
 
@@ -89,11 +84,7 @@ class PageController extends \BaseController {
 		}
 
 		// Set the input
-		$page->title = Input::get('title');
-		$page->slug = Input::get('slug');
-		$page->body = Input::get('body');
-		$page->status = Input::get('status');
-		$page->language = Input::get('language');
+		$page->populate();
 
 		// Save
 		$page->save();
