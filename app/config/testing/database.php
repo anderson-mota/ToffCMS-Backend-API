@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'homestead',
+			'database'  => 'cms_api_tests',
 			'username'  => 'homestead',
 			'password'  => 'secret',
 			'charset'   => 'utf8',
@@ -66,7 +66,7 @@ return array(
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
-			'database' => 'homestead',
+			'database' => 'cms_api_tests',
 			'username' => 'homestead',
 			'password' => 'secret',
 			'charset'  => 'utf8',
@@ -78,7 +78,7 @@ return array(
 		'sqlsrv' => array(
 			'driver'   => 'sqlsrv',
 			'host'     => 'localhost',
-			'database' => 'homestead',
+			'database' => 'cms_api_tests',
 			'username' => 'homestead',
 			'password' => 'secret',
 			'prefix'   => '',
