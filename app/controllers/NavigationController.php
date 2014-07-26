@@ -44,13 +44,7 @@ class NavigationController extends \BaseController {
 		}
 
 		$nav = new Navigation;
-		$nav->title = Input::get('title');
-		$nav->type = Input::get('type');
-		$nav->uri = Input::get('uri');
-		$nav->page_id = Input::get('page_id');
-		$nav->url = Input::get('url');
-		$nav->target = Input::get('target');
-		$nav->language = Input::get('language');
+		$nav->populate();
 
 		$nav->save();
 
@@ -84,6 +78,7 @@ class NavigationController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		/** @var Navigation $nav */
 		$nav = Navigation::find($id);
 
 		// Does the item exist?
@@ -100,13 +95,7 @@ class NavigationController extends \BaseController {
 		}
 
 		// Set the input
-		$nav->title = Input::get('title');
-		$nav->type = Input::get('type');
-		$nav->uri = Input::get('uri');
-		$nav->page_id = Input::get('page_id');
-		$nav->url = Input::get('url');
-		$nav->target = Input::get('target');
-		$nav->language = Input::get('language');
+		$nav->populate();
 
 		// Save
 		$nav->save();

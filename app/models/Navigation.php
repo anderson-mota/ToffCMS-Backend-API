@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Class Navigation
+ *
+ * @property integer $id
+ * @property string $title
+ * @property string $type
+ * @property string $uri
+ * @property string $url
+ * @property integer $page_id
+ * @property integer $order_id
+ * @property string $language
+ */
 class Navigation extends Eloquent {
 
 	protected $table = 'navigation';
@@ -10,7 +22,7 @@ class Navigation extends Eloquent {
 	 * Validate the input
 	 * @param  array $input
 	 * @param  string $type
-	 * @return Validator
+	 * @return \Illuminate\Validation\Validator
 	 */
 	public static function validate($input, $type = null)
 	{
@@ -22,7 +34,7 @@ class Navigation extends Eloquent {
 				'url'          => array('max:250'),
 				'target'       => array('in:,_blank'),
 				'type'         => array('required', 'in:uri,page,website'),
-				'language'     => array('required', 'in:lv,en,ru'),
+				'language'     => array('required', 'in:pt,en'),
 			),
 		);
 
@@ -38,6 +50,20 @@ class Navigation extends Eloquent {
 		return Validator::make($input, $rules);
 	}
 
+	public function populate()
+	{
+		$this->title = Input::get('title');
+		$this->type = Input::get('type');
+		$this->uri = Input::get('uri');
+		$this->page_id = Input::get('page_id');
+		$this->url = Input::get('url');
+		$this->target = Input::get('target');
+		$this->language = Input::get('language');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasOne
+	 */
 	public function page()
 	{
 		return $this->hasOne('Page', 'id', 'page_id');
@@ -52,26 +78,46 @@ class Navigation extends Eloquent {
 		return $this->hasMany('Navigation', 'parent_id', 'id');
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getPageIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getParentIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getOrderIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @return null|string
+	 * @throws Exception
+	 */
 	public function getFullUrlAttribute()
 	{
 		switch ($this->attributes['type'])
@@ -96,7 +142,8 @@ class Navigation extends Eloquent {
 
 	/**
 	 * Update the item order
-	 * @param  array  $items
+	 * @param  array $items
+	 * @param int $parent_id
 	 * @return boolean
 	 */
 	public static function updateOrder(array $items, $parent_id = 0)

@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Class Page
+ *
+ * @property integer $id
+ * @property string $title
+ * @property string $slug
+ * @property string $content
+ * @property string $status
+ * @property string $language
+ * @property integer $author_id
+ */
 class Page extends Eloquent {
 
 	protected $table = 'pages';
@@ -9,7 +20,7 @@ class Page extends Eloquent {
 	 * Validate the input
 	 * @param  array $input
 	 * @param  string $type
-	 * @return Validator
+	 * @return \Illuminate\Validation\Validator
 	 */
 	public static function validate($input, $type = null)
 	{
@@ -18,8 +29,7 @@ class Page extends Eloquent {
 				'title'        => array('required', 'max:100'),
 				'slug'         => array('required', 'max:100', 'unique:pages,slug,null,id,language,'. Input::get('language')),
 				'status'       => array('required', 'in:draft,live'),
-				'language'     => array('required', 'in:lv,en,ru'),
-				'body'         => array('required')
+				'language'     => array('required', 'in:pt,en'),
 			),
 			'update' => array(
 				'slug'         => array('required', 'max:100'),
@@ -38,17 +48,46 @@ class Page extends Eloquent {
 		return Validator::make($input, $rules);
 	}
 
+	/**
+	 * @param string $persistType
+	 */
+	public function populate($persistType = 'insert'){
+		$this->title = Input::get('title');
+		$this->slug = Input::get('slug');
+		$this->content = Input::get('content');
+
+		if ($persistType == 'insert') {
+			$this->status = Input::get('status', 'draft');
+			$this->language = Input::get('language', 'pt');
+			$this->author_id = User::getCurrent()->id;
+		} else {
+			$this->status = Input::get('status');
+			$this->language = Input::get('language');
+		}
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function author()
 	{
 		return $this->hasOne('User', 'id', 'author_id')
 					->select('id', 'email');
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getAuthorIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getIdAttribute($value)
 	{
 		return (int) $value;

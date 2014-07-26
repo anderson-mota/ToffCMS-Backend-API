@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class Gallery
+ *
+ * @property integer $id
+ *
+ */
 class Gallery extends \Eloquent {
 
 	protected $table = 'gallery';

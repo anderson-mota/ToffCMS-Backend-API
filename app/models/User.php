@@ -27,11 +27,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	protected $hidden = array('password', 'updated_at');
 
 	/**
-	 * @var array
-	 */
-	protected $fillable = array('email', 'password', 'api_key');
-
-	/**
 	 * Get the unique identifier for the user.
 	 *
 	 * @return mixed

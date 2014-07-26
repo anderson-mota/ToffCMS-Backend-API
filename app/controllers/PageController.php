@@ -31,12 +31,7 @@ class PageController extends \BaseController {
 		}
 
 		$page = new Page;
-		$page->title = Input::get('title');
-		$page->slug = Input::get('slug');
-		$page->body = Input::get('body');
-		$page->status = Input::get('status', 'draft');
-		$page->language = Input::get('language', 'en');
-		$page->author_id = User::getCurrent()->id;
+		$page->populate();
 
 		$page->save();
 
@@ -54,7 +49,7 @@ class PageController extends \BaseController {
 	{
 		$page = Page::where('slug', $slug)
 		            ->where('status', 'live')
-					->where('language', Input::get('language', 'en'))
+					->where('language', Input::get('language', 'pt'))
 					->with('author')
 					->take(1)
 					->get();
@@ -71,6 +66,7 @@ class PageController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		/** @var Page $page */
 		$page = Page::find($id);
 
 		// Does the page exist?
@@ -87,11 +83,7 @@ class PageController extends \BaseController {
 		}
 
 		// Set the input
-		$page->title = Input::get('title');
-		$page->slug = Input::get('slug');
-		$page->body = Input::get('body');
-		$page->status = Input::get('status');
-		$page->language = Input::get('language');
+		$page->populate(__FUNCTION__);
 
 		// Save
 		$page->save();
