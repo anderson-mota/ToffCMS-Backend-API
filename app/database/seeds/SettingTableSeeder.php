@@ -16,8 +16,8 @@ class SettingTableSeeder extends Seeder {
 		Setting::create(array(
 			'name' => 'Default Language',
 			'key' => 'defaultLanguage',
-			'default' => 'en',
-			'available_values' => 'en|lv|ru',
+			'default' => 'pt',
+			'available_values' => 'pt|en',
 			'is_public' => 'Y'
 		));
 

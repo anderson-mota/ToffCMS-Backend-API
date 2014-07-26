@@ -3,9 +3,8 @@
 class NavigationTableSeeder extends Seeder {
 
 	protected $languages = array(
-		'lv',
+		'pt',
 		'en',
-		'ru',
 	);
 
 	public function run()
@@ -19,7 +18,7 @@ class NavigationTableSeeder extends Seeder {
 			$page = Page::where('language', $lang)->first();
 
 			$parent = Navigation::create(array(
-				'title' => 'Home (' . $lang . ')',
+				'name' => 'Home (' . $lang . ')',
 				'type' => 'uri',
 				'uri' => '',
 				'language' => $lang,
@@ -29,7 +28,7 @@ class NavigationTableSeeder extends Seeder {
 			if ($page)
 			{
 				Navigation::create(array(
-					'title' => $page->title . ' (' . $lang . ')',
+					'name' => $page->title . ' (' . $lang . ')',
 					'type' => 'page',
 					'page_id' => $page->id,
 					'language' => $lang,
@@ -38,7 +37,7 @@ class NavigationTableSeeder extends Seeder {
 			}
 
 			Navigation::create(array(
-				'title' => 'Google (' . $lang . ')',
+				'name' => 'Google (' . $lang . ')',
 				'type' => 'website',
 				'target' => '_blank',
 				'url' => 'http://www.google.com/',
@@ -47,7 +46,7 @@ class NavigationTableSeeder extends Seeder {
 			));
 
 			Navigation::create(array(
-				'title' => '404 (' . $lang . ')',
+				'name' => '404 (' . $lang . ')',
 				'type' => 'uri',
 				'uri' => '/404',
 				'language' => $lang,
@@ -57,7 +56,7 @@ class NavigationTableSeeder extends Seeder {
 			for ($j = 1; $j <= rand(2, 6); $j++)
 			{
 				Navigation::create(array(
-					'title' => 'Item #' . $j,
+					'name' => 'Item #' . $j,
 					'type' => 'uri',
 					'uri' => '',
 					'language' => $lang,
