@@ -19,7 +19,7 @@ class SettingController extends \BaseController {
 			$return[$setting->key] = $setting->value;
 		}
 
-		return static::response('settings', $return);
+		return \App\Libraries\RestResponse::success('settings', $return);
 
 	}
 

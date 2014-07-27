@@ -34,7 +34,7 @@ class UserController extends \BaseController {
 	{
 		$user = User::find($id);
 
-		return static::response('user', $user->toArray());
+		return \App\Libraries\RestResponse::success('user', $user->toArray());
 	}
 
 

@@ -1,20 +1,39 @@
 <?php
 
+/**
+ * Class Gallery_Item
+ *
+ * @property integer $id
+ * @property integer $gallery_id
+ * @property string $type
+ * @property string $content
+ */
 class Gallery_Item extends Eloquent {
 
 	protected $table = 'gallery_items';
 	protected $hidden = array('created_at', 'updated_at', 'gallery_id');
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function gallery()
 	{
 		return $this->belongsTo('Gallery');
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getIdAttribute($value)
 	{
 		return (int) $value;
 	}
 
+	/**
+	 * @param $value
+	 * @return int
+	 */
 	public function getGalleryIdAttribute($value)
 	{
 		return (int) $value;
@@ -23,6 +42,7 @@ class Gallery_Item extends Eloquent {
 	/**
 	 * Delete an image - both from DB and cache
 	 * @param  integer $id
+	 * @return int
 	 */
 	public static function destroy($id)
 	{

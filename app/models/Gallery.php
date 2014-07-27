@@ -14,7 +14,7 @@ class Gallery extends \Eloquent {
 	/**
 	 * Validate the input
 	 * @param  array $input
-	 * @return Validator
+	 * @return \Illuminate\Validation\Validator
 	 */
 	public function validate($input)
 	{

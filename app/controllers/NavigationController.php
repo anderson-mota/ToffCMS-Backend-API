@@ -1,5 +1,7 @@
 <?php
 
+use App\Libraries\RestResponse;
+
 class NavigationController extends \BaseController {
 
 	/**
@@ -14,7 +16,7 @@ class NavigationController extends \BaseController {
 					->orderBy('order_id')
 					->get();
 
-		return static::response('navigation', $nav->toArray());
+		return RestResponse::success('navigation', $nav->toArray());
 	}
 
 
@@ -25,7 +27,7 @@ class NavigationController extends \BaseController {
 	public function saveOrder()
 	{
 		Navigation::updateOrder(Input::get('data'));
-		return static::response('message', 'Successfully saved the order');
+		return RestResponse::success('message', 'Successfully saved the order');
 	}
 
 
@@ -40,7 +42,7 @@ class NavigationController extends \BaseController {
 		$validator = Navigation::validate(Input::all());
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return RestResponse::error('message', $validator->messages()->all());
 		}
 
 		$nav = new Navigation;
@@ -48,7 +50,7 @@ class NavigationController extends \BaseController {
 
 		$nav->save();
 
-		return static::response('page', $nav->toArray());
+		return RestResponse::success('page', $nav->toArray());
 	}
 
 
@@ -60,13 +62,14 @@ class NavigationController extends \BaseController {
 	 */
 	public function show($language)
 	{
+		/** @var Navigation $nav */
 		$nav = Navigation::where('language', $language)
 					->where('parent_id', 0)
 					->with('children')
 					->orderBy('order_id')
 					->get();
 
-		return static::response('navigation', $nav->toArray());
+		return RestResponse::success('navigation', $nav->toArray());
 	}
 
 
@@ -84,14 +87,14 @@ class NavigationController extends \BaseController {
 		// Does the item exist?
 		if ($nav === null || $nav->exists() === false)
 		{
-			return static::response('message', 'Navigation instance with this ID doesn\'t exist.', true);
+			return RestResponse::error('message', 'Navigation instance with this ID doesn\'t exist.');
 		}
 
 		// Validate the input
 		$validator = Navigation::validate(Input::all(), 'update');
 		if ($validator->fails())
 		{
-			return static::response('message', $validator->messages()->all(), true);
+			return RestResponse::error('message', $validator->messages()->all());
 		}
 
 		// Set the input
@@ -100,7 +103,7 @@ class NavigationController extends \BaseController {
 		// Save
 		$nav->save();
 
-		return static::response('page', $nav->toArray());
+		return RestResponse::success('page', $nav->toArray());
 	}
 
 
@@ -113,7 +116,7 @@ class NavigationController extends \BaseController {
 	public function destroy($id)
 	{
 		Navigation::destroy($id);
-		return static::response('status', true);
+		return RestResponse::success('status', true);
 	}
 
 }

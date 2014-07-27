@@ -14,14 +14,4 @@ class BaseController extends Controller {
 			$this->layout = View::make($this->layout);
 		}
 	}
-
-	protected static function response($key, $data, $error = FALSE)
-	{
-		return Response::json(array(
-			'error' => $error,
-			$key => $data),
-			($error ? 406 : 200)
-		);
-	}
-
 }
