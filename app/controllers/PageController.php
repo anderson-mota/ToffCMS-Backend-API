@@ -25,15 +25,15 @@ class PageController extends \BaseController {
 	 */
 	public function store()
 	{
+		$page = new Page;
+		$page->populate();
+
 		// Set up the validator
-		$validator = Page::validate(Input::all());
+		$validator = Page::validate($page->toArray());
 		if ($validator->fails())
 		{
 			return RestResponse::error('message', $validator->messages()->all());
 		}
-
-		$page = new Page;
-		$page->populate();
 
 		$page->save();
 
@@ -78,15 +78,15 @@ class PageController extends \BaseController {
 			return RestResponse::error('message', 'Page with this ID doesn\'t exist.');
 		}
 
+		// Set the input
+		$page->populate(__FUNCTION__);
+
 		// Validate the input
-		$validator = Page::validate(Input::all(), 'update');
+		$validator = Page::validate($page->toArray(), 'update');
 		if ($validator->fails())
 		{
 			return RestResponse::error('message', $validator->messages()->all());
 		}
-
-		// Set the input
-		$page->populate(__FUNCTION__);
 
 		// Save
 		$page->save();

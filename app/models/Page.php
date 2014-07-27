@@ -24,6 +24,15 @@ class Page extends Eloquent {
 	 */
 	public static function validate($input, $type = null)
 	{
+		return Validator::make($input, self::rulesValidator($type));
+	}
+
+	/**
+	 * @param string|null $type
+	 * @return array[]
+	 */
+	protected static function rulesValidator($type = null)
+	{
 		$allRules = array(
 			'default' => array(
 				'title'        => array('required', 'max:100'),
@@ -32,7 +41,7 @@ class Page extends Eloquent {
 				'language'     => array('required', 'in:pt,en'),
 			),
 			'update' => array(
-				'slug'         => array('required', 'max:100'),
+				'slug'         => array('required|max:100'),
 			)
 		);
 
@@ -45,7 +54,7 @@ class Page extends Eloquent {
 			$rules = array_merge($rules, $allRules[$type]);
 		}
 
-		return Validator::make($input, $rules);
+		return $rules;
 	}
 
 	/**
@@ -53,13 +62,13 @@ class Page extends Eloquent {
 	 */
 	public function populate($persistType = 'insert'){
 		$this->title = Input::get('title');
-		$this->slug = Input::get('slug');
+		$this->slug = Input::get('slug', Str::slug($this->title));
 		$this->content = Input::get('content');
 
 		if ($persistType == 'insert') {
 			$this->status = Input::get('status', 'draft');
 			$this->language = Input::get('language', 'pt');
-			$this->author_id = User::getCurrent()->id;
+			$this->author_id = isset(User::getCurrent()->id) ? User::getCurrent()->id : 1;
 		} else {
 			$this->status = Input::get('status');
 			$this->language = Input::get('language');
@@ -74,23 +83,4 @@ class Page extends Eloquent {
 		return $this->hasOne('User', 'id', 'author_id')
 					->select('id', 'email');
 	}
-
-	/**
-	 * @param $value
-	 * @return int
-	 */
-	public function getAuthorIdAttribute($value)
-	{
-		return (int) $value;
-	}
-
-	/**
-	 * @param $value
-	 * @return int
-	 */
-	public function getIdAttribute($value)
-	{
-		return (int) $value;
-	}
-
 }

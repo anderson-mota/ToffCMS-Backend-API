@@ -72,7 +72,7 @@ return array(
 			'charset'  => 'utf8',
 			'prefix'   => '',
 			'schema'   => 'public',
-			'port'     => Request::server("REMOTE_ADDR") == "127.0.0.1" ? '5432' : '54320',
+			'port'     => Request::server("SERVER_ADDR") == "192.168.10.10" ? '5432' : '54320',
 		),
 
 		'sqlsrv' => array(

@@ -33,4 +33,16 @@ class AuthenticationTest extends TestCase {
 		$this->assertResponseStatus(200);
 		$this->assertFalse($content->error);
 	}
+
+	/**
+	 * @dataProvider providerLogin
+	 * @param $email
+	 */
+	public function testFailAuthentication($email)
+	{
+	    $response = $this->action("POST", "LoginController@getApiKey", ['email' => $email, 'password' => '123456']);
+		$content = json_decode($response->getContent());
+		$this->assertResponseStatus(406);
+		$this->assertTrue($content->error);
+	}
 }
