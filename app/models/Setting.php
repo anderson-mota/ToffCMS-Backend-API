@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Class Setting
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $description
+ * @property string $key
+ * @property string $default
+ * @property string $value
+ * @property string $available_values
+ * @property string $is_public
+ */
 class Setting extends Eloquent {
 
 	protected $table = 'settings';

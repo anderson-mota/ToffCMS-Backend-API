@@ -24,9 +24,6 @@ Route::get('developer', 'DeveloperController@index'); // ToDo: temp
 // Route group for API versioning
 Route::group(array('prefix' => 'v1.0'), function()
 {
-	Route::get('page/{slug}', 'PageController@show');
-	Route::get('gallery/{slug}', 'GalleryController@show');
-	Route::get('navigation/{language}', 'NavigationController@show');
 
 	// Admin routes
 	Route::group(array('before' => 'auth.apiKey'), function()
@@ -46,4 +43,8 @@ Route::group(array('prefix' => 'v1.0'), function()
 	Route::get('gallery', 'GalleryController@index');
 	Route::get('settings', 'SettingController@index');
 	Route::post('login', 'LoginController@getApiKey');
+
+	Route::get('page/{slug}', 'PageController@show');
+	Route::get('gallery/{slug}', 'GalleryController@show');
+	Route::get('navigation/{language}', 'NavigationController@show');
 });

@@ -25,15 +25,15 @@ class PageController extends \BaseController {
 	 */
 	public function store()
 	{
+		$page = new Page;
+		$page->populate('insert');
+
 		// Set up the validator
-		$validator = Page::validate(Input::all());
+		$validator = Page::validate($page->toArray());
 		if ($validator->fails())
 		{
 			return ResponseJson::error('message', $validator->messages()->all());
 		}
-
-		$page = new Page;
-		$page->populate('insert');
 
 		$page->save();
 
@@ -68,6 +68,7 @@ class PageController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		/** @var Page $page */
 		$page = Page::find($id);
 
 		// Does the page exist?
@@ -76,15 +77,15 @@ class PageController extends \BaseController {
 			return ResponseJson::error('message', 'Page with this ID doesn\'t exist.');
 		}
 
+		// Set the input
+		$page->populate();
+
 		// Validate the input
-		$validator = Page::validate(Input::all(), 'update');
+		$validator = Page::validate($page->toArray(), 'update');
 		if ($validator->fails())
 		{
 			return ResponseJson::error('message', $validator->messages()->all());
 		}
-
-		// Set the input
-		$page->populate();
 
 		// Save
 		$page->save();

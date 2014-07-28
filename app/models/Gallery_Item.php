@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class Gallery_Item
+ *
+ * @property integer $id
+ * @property string $type
+ * @property string $content
+ * @property integer $gallery_id
+ * @property integer $order_id
+ */
 class Gallery_Item extends Eloquent {
 
 	protected $table = 'gallery_items';

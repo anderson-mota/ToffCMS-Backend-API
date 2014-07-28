@@ -2,10 +2,15 @@
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
+	protected $useDatabase = true;
+
 	public function setUp()
 	{
 		parent::setUp();
-		$this->prepareForTests();
+		if($this->useDatabase)
+		{
+			$this->prepareForTests();
+		}
 	}
 
 	/**

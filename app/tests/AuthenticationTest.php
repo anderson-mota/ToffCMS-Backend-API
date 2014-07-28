@@ -11,11 +11,24 @@
 class AuthenticationTest extends TestCase {
 
 	/**
+	 * @return array[]
+	 */
+	public function providerAuthenticate()
+	{
+	    return [
+		    ["anderson.mota@lqdi.net", "dev123"]
+	    ];
+	}
+
+	/**
+	 * @dataProvider providerAuthenticate
+	 * @param string $email
+	 * @param string $password
 	 * @return void
 	 */
-	public function testBasicAuthentication()
+	public function testBasicAuthentication($email, $password)
 	{
-	    $response =  $this->action("POST", "LoginController@getApiKey", ['email' => "anderson.mota@lqdi.net", 'password' => "dev123"]);
+	    $response = $this->action("POST", "LoginController@getApiKey", ['email' => $email, 'password' => $password]);
 		$content = json_decode($response->getContent());
 		$this->assertFalse($content->error);
 		$this->assertNotEmpty($content->user->id);
@@ -23,9 +36,14 @@ class AuthenticationTest extends TestCase {
 		$this->assertNotEmpty($content->user->api_key);
 	}
 
-	public function testNegateAuthentication()
+	/**
+	 * @dataProvider providerAuthenticate
+	 * @param string $email
+	 * @return void
+	 */
+	public function testNegateAuthentication($email)
 	{
-		$response =  $this->action("POST", "LoginController@getApiKey", ['email' => "anderson.mota@lqdi.net", 'password' => "xxxxxx"]);
+		$response =  $this->action("POST", "LoginController@getApiKey", ['email' => $email, 'password' => "xxxxxx"]);
 		$content = json_decode($response->getContent());
 		$this->assertTrue($content->error);
 	}

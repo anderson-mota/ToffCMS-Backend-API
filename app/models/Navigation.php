@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * Class Navigation
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $uri
+ * @property string $url
+ * @property string $target
+ * @property integer $page_id
+ * @property string $language
+ * @property string $type
+ * @property integer $parent_id
+ * @property integer $order_id
+ */
 class Navigation extends Eloquent {
 
 	protected $table = 'navigation';
