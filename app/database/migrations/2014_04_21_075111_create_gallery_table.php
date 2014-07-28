@@ -27,6 +27,7 @@ class CreateGalleryTable extends Migration {
 			$table->enum('type', array('video', 'image'));
 			$table->string('content', 250);
 			$table->integer('gallery_id');
+			$table->integer('order_id');
 			$table->timestamps();
 		});
 	}

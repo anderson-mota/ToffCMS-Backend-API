@@ -16,10 +16,10 @@ class CreatePagesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('title', 100);
-			$table->string('slug', 100)->unique();
-			$table->text('body');
+			$table->string('slug', 100);
+			$table->text('content')->nullable();
+			$table->enum('language', array('pt', 'en', 'es'))->default("pt");
 			$table->enum('status', array('live', 'draft'));
-			$table->enum('language', array('en', 'lv', 'ru'));
 			$table->integer('author_id');
 			$table->timestamps();
 		});
@@ -32,10 +32,7 @@ class CreatePagesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('pages', function(Blueprint $table)
-		{
-			//
-		});
+		Schema::drop('pages');
 	}
 
 }

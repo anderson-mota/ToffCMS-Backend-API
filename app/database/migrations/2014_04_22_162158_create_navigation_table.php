@@ -15,13 +15,15 @@ class CreateNavigationTable extends Migration {
 		Schema::create('navigation', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('title');
+			$table->string('name');
+			$table->string('uri')->nullable();
+			$table->string('url')->nullable();
+			$table->enum('target', array('_self', '_blank'))->default('_self');
+			$table->integer('page_id')->nullable();
+			$table->enum('language', array('pt', 'en', 'es'));
 			$table->enum('type', array('page', 'website', 'uri'));
-			$table->string('uri');
-			$table->string('url');
-			$table->integer('page_id');
+			$table->integer('parent_id')->nullable();
 			$table->integer('order_id');
-			$table->enum('language', array('lv', 'en', 'ru'));
 			$table->timestamps();
 		});
 	}
