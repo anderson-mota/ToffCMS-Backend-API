@@ -10,6 +10,9 @@
 
 class AuthenticationTest extends TestCase {
 
+	/** @var  User */
+	public static $user;
+
 	/**
 	 * @return array[]
 	 */
@@ -34,6 +37,7 @@ class AuthenticationTest extends TestCase {
 		$this->assertNotEmpty($content->user->id);
 		$this->assertNotEmpty($content->user->email);
 		$this->assertNotEmpty($content->user->api_key);
+		self::$user = $content->user;
 	}
 
 	/**

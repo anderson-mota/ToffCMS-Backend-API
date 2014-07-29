@@ -13,6 +13,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
  */
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
+	/** @var self */
 	protected static $user;
 
 	/**
@@ -126,7 +127,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
 	/**
 	 * Grab the current user
-	 * @return object
+	 * @return static
 	 */
 	public static function getCurrent()
 	{

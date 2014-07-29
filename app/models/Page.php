@@ -76,7 +76,7 @@ class Page extends Eloquent {
 		if ($action == 'insert') {
 			$this->status = Input::get('status', 'draft');
 			$this->language = Input::get('language', 'pt');
-			$this->author_id = isset(User::getCurrent()->id) ? User::getCurrent()->id : 1;
+			$this->author_id = Input::exists("author_id") ? Input::get('author_id') : User::getCurrent()->id;
 		} else {
 			$this->status = Input::get('status');
 			$this->language = Input::get('language');

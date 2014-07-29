@@ -11,23 +11,6 @@
 class PageTest extends TestCase {
 
 	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
-	 * Return: E-mail, Password
-	 *
-	 * @return array[string, string] | E-mail, Password
-	 */
-	public function providerAuthenticate()
-	{
-		return [
-			["anderson.mota@lqdi.net", "dev123"]
-		];
-	}
-
-	/**
 	 * Return: Title, Slug, Body, Status, Language
 	 *
 	 * @return array[]
@@ -65,19 +48,6 @@ class PageTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerAuthenticate
-	 * @param $email
-	 * @param $password
-	 */
-	public function testBasicAuthentication($email, $password)
-	{
-		$response = $this->action("POST", "LoginController@getApiKey", ['email' => $email, 'password' => $password]);
-		$content = json_decode($response->getContent());
-		$this->assertFalse($content->error);
-		$this->user = $content->user;
-	}
-
-	/**
 	 * @param string $title
 	 * @param string $slug
 	 * @param string $body
@@ -87,14 +57,14 @@ class PageTest extends TestCase {
 	 */
 	public function requestStore($title, $slug, $body, $status, $language)
 	{
+		$user = User::orderby('created_at', 'desc')->first();
 		$response = $this->action("POST", "PageController@store",
-			['title' => $title, 'slug' => $slug, 'body' => $body, 'status' => $status, 'language' => $language]);
+			['title' => $title, 'slug' => $slug, 'body' => $body, 'status' => $status, 'language' => $language, 'author_id' => $user->id]);
 		return json_decode($response->getContent());
 	}
 
 	/**
 	 * @dataProvider providerDataPageSuccess
-	 * @depends      testBasicAuthentication
 	 * @param $title
 	 * @param $slug
 	 * @param $body
