@@ -1,5 +1,7 @@
 <?php
 
+use App\Libraries\SaveEloquentInterface;
+
 /**
  * Class Page
  *
@@ -11,7 +13,7 @@
  * @property $language
  * @property $author_id
  */
-class Page extends Eloquent {
+class Page extends Eloquent implements SaveEloquentInterface {
 
 	protected $table = 'pages';
 	protected $hidden = array('updated_at', 'author_id');

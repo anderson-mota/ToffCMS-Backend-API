@@ -1,6 +1,7 @@
 <?php
 
 use App\Libraries\ResponseJson;
+use \App\Libraries\SaveEloquent;
 
 class PageController extends \BaseController {
 
@@ -25,19 +26,7 @@ class PageController extends \BaseController {
 	 */
 	public function store()
 	{
-		$page = new Page;
-		$page->populate('insert');
-
-		// Set up the validator
-		$validator = Page::validate($page->toArray());
-		if ($validator->fails())
-		{
-			return ResponseJson::error('message', $validator->messages()->all());
-		}
-
-		$page->save();
-
-		return ResponseJson::success('page', $page->toArray());
+		return SaveEloquent::insert(new Page);
 	}
 
 
@@ -71,26 +60,7 @@ class PageController extends \BaseController {
 		/** @var Page $page */
 		$page = Page::find($id);
 
-		// Does the page exist?
-		if ($page->exists() === false)
-		{
-			return ResponseJson::error('message', 'Page with this ID doesn\'t exist.');
-		}
-
-		// Set the input
-		$page->populate();
-
-		// Validate the input
-		$validator = Page::validate($page->toArray(), 'update');
-		if ($validator->fails())
-		{
-			return ResponseJson::error('message', $validator->messages()->all());
-		}
-
-		// Save
-		$page->save();
-
-		return ResponseJson::success('page', $page->toArray());
+		return SaveEloquent::update($page);
 	}
 
 
