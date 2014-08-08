@@ -22,7 +22,7 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		return \App\Libraries\SaveEloquent::insert(new User());
 	}
 
 

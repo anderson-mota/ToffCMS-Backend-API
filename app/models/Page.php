@@ -1,6 +1,7 @@
 <?php
 
 use App\Libraries\SaveEloquentInterface;
+use App\Libraries\RulesCollection;
 
 /**
  * Class Page
@@ -26,37 +27,14 @@ class Page extends Eloquent implements SaveEloquentInterface {
 	 */
 	public static function validate($input, $type = null)
 	{
-		return Validator::make($input, self::rulesValidate($type));
-	}
+        $rules = new RulesCollection();
+        $rules->add('title', ['required', 'max:100'])
+            ->add('slug', ['required', 'max:100', 'unique:pages,slug,null,id,language,'. Input::get('language')])
+            ->add('status', ['required', 'in:draft,live'])
+            ->add('language', ['required', 'in:pt,en'])
+            ->addByType('update', 'slug', ['required', 'max:100']);
 
-	/**
-	 * @param string|null $type
-	 * @return array
-	 */
-	public static function rulesValidate($type = null)
-	{
-		$allRules = array(
-			'default' => array(
-				'title'        => array('required', 'max:100'),
-				'slug'         => array('required', 'max:100', 'unique:pages,slug,null,id,language,'. Input::get('language')),
-				'status'       => array('required', 'in:draft,live'),
-				'language'     => array('required', 'in:pt,en'),
-			),
-			'update' => array(
-				'slug'         => array('required', 'max:100'),
-			)
-		);
-
-		// Get the default rules
-		$rules = $allRules['default'];
-
-		// Marge in the specific rules
-		if ($type !== null && isset($allRules[$type]))
-		{
-			$rules = array_merge($rules, $allRules[$type]);
-		}
-
-		return $rules;
+		return Validator::make($input, $rules->make($type));
 	}
 
 	public function author()

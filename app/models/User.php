@@ -2,6 +2,8 @@
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use App\Libraries\SaveEloquentInterface;
+use App\Libraries\RulesCollection;
 
 /**
  * Class User
@@ -11,7 +13,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
  * @property string $password
  * @property string $api_key
  */
-class User extends Eloquent implements UserInterface, RemindableInterface {
+class User extends Eloquent implements UserInterface, RemindableInterface, SaveEloquentInterface {
 
 	/** @var self */
 	protected static $user;
@@ -133,4 +135,35 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return static::$user;
 	}
+
+    /**
+     * @param array $input
+     * @param string|null $type
+     * @return \Illuminate\Validation\Validator
+     */
+    public static function validate($input, $type = null)
+    {
+        $rules = new RulesCollection();
+        $rules->add('email',  ['required', 'max:255', 'unique:users,email'])
+            ->add('password', ['required', 'max:255,confirmed']) //use input password_confirmation
+            ->add('api_key',  ['required', 'max:255']);
+
+        return Validator::make($input, $rules->make($type));
+    }
+
+    /**
+     * @param string $action
+     */
+    public function populate($action = 'insert')
+    {
+        $this->email = Input::get('email');
+
+        if (Input::exists('password') and !empty(Input::get('password'))) {
+            $this->password = Hash::make(Input::get('password'));
+        }
+
+        if ($action == 'insert') {
+            $this->api_key = md5(uniqid(rand(), true));
+        }
+    }
 }
