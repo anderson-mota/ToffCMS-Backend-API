@@ -75,8 +75,7 @@ class PageTest extends TestCase {
 	{
 		$content = $this->requestStore($title, $slug, $body, $status, $language);
 
-		$this->assertResponseStatus(200);
-		$this->assertFalse($content->error, $content->error ? $content->message : null);
+		$this->assertNotError($content->error, $content->error ? $content->message : null);
 		$this->assertEquals($content->page->title, $title);
 	}
 

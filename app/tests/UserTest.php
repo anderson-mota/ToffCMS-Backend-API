@@ -16,8 +16,8 @@ class UserTest extends TestCase {
 	public function providerDataSuccess()
 	{
 	    return [
-		    ["test@lqdi.net", "q1w2e3r4", sha1("key#99")],
-		    ["test@test.com", "qwe123@!?a", sha1("key#123")],
+		    ["test@lqdi.net", "q1w2e3r4", "q1w2e3r4"],
+		    ["test@test.com", "qwe123@!?a", "qwe123@!?a"],
 	    ];
 	}
 
@@ -28,13 +28,39 @@ class UserTest extends TestCase {
 	{
 		return [
 			[null, "123123", null],
-			["foo@test.com", null, sha1("fox@5.4")],
-			["bar@test.com", "123456"]
+			["foo@test.com", null, null],
+			["bar@test.com", "123456", "123c56"],
 		];
 	}
 
-	public function testBasic()
-	{
-	    $this->assertTrue(true);
-	}
+    /**
+     * @dataProvider providerDataSuccess
+     * @param string $email
+     * @param string $password
+     * @param string $confirmation
+     */
+    public function testBasicCreate($email, $password, $confirmation)
+    {
+       $response = $this->action("POST", "UserController@store",
+            ['email' => $email, 'password' => $password, 'password_confirmation' => $confirmation]);
+        $content = json_decode($response->getContent());
+
+        $this->assertNotError($content->error, $content->error ? join("\n",  $content->message) : null);
+    }
+
+    /**
+     * @dataProvider providerDataFail
+     * @param string $email
+     * @param string $password
+     * @param string $confirmation
+     */
+    public function testFailCreate($email, $password, $confirmation)
+    {
+        $response = $this->action("POST", "UserController@store",
+            ['email' => $email, 'password' => $password, 'password_confirmation' => $confirmation]);
+        $content = json_decode($response->getContent());
+
+        $this->assertTrue($content->error);
+        $this->assertResponseStatus(406);
+    }
 }

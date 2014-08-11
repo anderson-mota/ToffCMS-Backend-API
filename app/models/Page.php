@@ -1,6 +1,6 @@
 <?php
 
-use App\Libraries\SaveEloquentInterface;
+use App\Libraries\SaveRecipeInterface;
 use App\Libraries\RulesCollection;
 
 /**
@@ -14,18 +14,17 @@ use App\Libraries\RulesCollection;
  * @property $language
  * @property $author_id
  */
-class Page extends Eloquent implements SaveEloquentInterface {
+class Page extends Eloquent implements SaveRecipeInterface {
 
 	protected $table = 'pages';
 	protected $hidden = array('updated_at', 'author_id');
 
 	/**
 	 * Validate the input
-	 * @param  array $input
 	 * @param  string $type
 	 * @return \Illuminate\Validation\Validator
 	 */
-	public static function validate($input, $type = null)
+	public function validate($type = null)
 	{
         $rules = new RulesCollection();
         $rules->add('title', ['required', 'max:100'])
@@ -34,7 +33,7 @@ class Page extends Eloquent implements SaveEloquentInterface {
             ->add('language', ['required', 'in:pt,en'])
             ->addByType('update', 'slug', ['required', 'max:100']);
 
-		return Validator::make($input, $rules->make($type));
+		return Validator::make($this->toArray(), $rules->make($type));
 	}
 
 	public function author()

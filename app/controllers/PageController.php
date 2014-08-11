@@ -1,7 +1,7 @@
 <?php
 
 use App\Libraries\ResponseJson;
-use \App\Libraries\SaveEloquent;
+use \App\Libraries\SaveRecipe;
 
 class PageController extends \BaseController {
 
@@ -26,7 +26,7 @@ class PageController extends \BaseController {
 	 */
 	public function store()
 	{
-		return SaveEloquent::insert(new Page);
+		return SaveRecipe::insert(new Page);
 	}
 
 
@@ -60,7 +60,7 @@ class PageController extends \BaseController {
 		/** @var Page $page */
 		$page = Page::find($id);
 
-		return SaveEloquent::update($page);
+		return SaveRecipe::update($page);
 	}
 
 

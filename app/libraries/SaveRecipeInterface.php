@@ -10,7 +10,7 @@
 
 namespace App\Libraries;
 
-interface SaveEloquentInterface {
+interface SaveRecipeInterface {
 	/**
 	 * @param string $action
 	 * @return void
@@ -18,11 +18,10 @@ interface SaveEloquentInterface {
 	public function populate($action = 'insert');
 
 	/**
-	 * @param $input
 	 * @param null $type
 	 * @return \Illuminate\Validation\Validator
 	 */
-	public static function validate($input, $type = null);
+	public function validate($type = null);
 
 	/**
 	 * @return bool

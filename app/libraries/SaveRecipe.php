@@ -10,21 +10,21 @@
 
 namespace App\Libraries;
 
-class SaveEloquent {
+class SaveRecipe {
 
 	/** @var bool */
 	private static $isUpdate = false;
 
 	/**
-	 * @param SaveEloquentInterface $builder
+	 * @param SaveRecipeInterface $builder
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public static function insert(SaveEloquentInterface $builder)
+	public static function insert(SaveRecipeInterface $builder)
 	{
 		$builder->populate(self::$isUpdate ? "update" : __FUNCTION__);
 
 		// Set up the validator
-		$validator = $builder::validate($builder->toArray(), self::$isUpdate ? "update" : __FUNCTION__);
+		$validator = $builder->validate(self::$isUpdate ? "update" : __FUNCTION__);
 		if ($validator->fails())
 		{
 			return ResponseJson::error('message', $validator->messages()->all());
@@ -36,10 +36,10 @@ class SaveEloquent {
 	}
 
 	/**
-	 * @param SaveEloquentInterface $builder
+	 * @param SaveRecipeInterface $builder
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public static function update(SaveEloquentInterface $builder)
+	public static function update(SaveRecipeInterface $builder)
 	{
 		// Does the page exist?
 		if (!isset($builder->id))

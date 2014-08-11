@@ -35,4 +35,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		Artisan::call('migrate');
 		Artisan::call('db:seed');
 	}
+
+    /**
+     * @param bool $error
+     * @param string|null $message
+     */
+    public function assertNotError($error, $message = null){
+        $this->assertFalse($error, $message);
+        $this->assertResponseStatus(200);
+    }
 }

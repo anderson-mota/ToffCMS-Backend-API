@@ -57,7 +57,7 @@ class RulesCollection {
         $rules = $this->rules['default'];
 
         // Marge in the specific rules
-        if ($type !== null && isset($this->rules[$type]))
+        if ($type !== null && array_key_exists($type, $this->rules))
         {
             $rules = array_merge($rules, $this->rules[$type]);
         }

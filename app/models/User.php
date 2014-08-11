@@ -2,7 +2,7 @@
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableInterface;
-use App\Libraries\SaveEloquentInterface;
+use App\Libraries\SaveRecipeInterface;
 use App\Libraries\RulesCollection;
 
 /**
@@ -13,7 +13,7 @@ use App\Libraries\RulesCollection;
  * @property string $password
  * @property string $api_key
  */
-class User extends Eloquent implements UserInterface, RemindableInterface, SaveEloquentInterface {
+class User extends Eloquent implements UserInterface, RemindableInterface, SaveRecipeInterface {
 
 	/** @var self */
 	protected static $user;
@@ -137,18 +137,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface, SaveE
 	}
 
     /**
-     * @param array $input
      * @param string|null $type
      * @return \Illuminate\Validation\Validator
      */
-    public static function validate($input, $type = null)
+    public function validate($type = null)
     {
         $rules = new RulesCollection();
         $rules->add('email',  ['required', 'max:255', 'unique:users,email'])
-            ->add('password', ['required', 'max:255,confirmed']) //use input password_confirmation
-            ->add('api_key',  ['required', 'max:255']);
+            ->add('password', ['required', 'max:255', 'confirmed']) //use input password_confirmation
+            ->add('api_key',  ['max:255']);
 
-        return Validator::make($input, $rules->make($type));
+        return Validator::make(Input::all(), $rules->make($type));
     }
 
     /**
