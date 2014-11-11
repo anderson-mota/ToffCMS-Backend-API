@@ -37,6 +37,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface, SaveR
 	 */
 	protected $fillable = array('email', 'password', 'api_key');
 
+    /**
+     * Call method in boot Model
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($user){
+            $user->api_key = md5(uniqid(rand(), true));
+        });
+    }
+
 	/**
 	 * Get the unique identifier for the user.
 	 *
@@ -98,7 +110,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface, SaveR
 		return $this->email;
 	}
 
-	public function getIdAttribute($value)
+    /**
+     * @param $value
+     * @return int
+     */
+    public function getIdAttribute($value)
 	{
 		return (int) $value;
 	}
@@ -144,10 +160,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface, SaveR
     {
         $rules = new RulesCollection();
         $rules->add('email',  ['required', 'max:255', 'unique:users,email'])
-            ->add('password', ['required', 'max:255', 'confirmed']) //use input password_confirmation
-            ->add('api_key',  ['max:255']);
+            ->addByType("insert", 'password', ['required', 'max:255', 'confirmed']); //use input password_confirmation
 
-        return Validator::make(Input::all(), $rules->make($type));
+        return Validator::make(array_merge(Input::all(), $this->toArray()), $rules->make($type));
     }
 
     /**
@@ -159,10 +174,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface, SaveR
 
         if (Input::exists('password') and !empty(Input::get('password'))) {
             $this->password = Hash::make(Input::get('password'));
-        }
-
-        if ($action == 'insert') {
-            $this->api_key = md5(uniqid(rand(), true));
         }
     }
 }

@@ -10,14 +10,16 @@
 
 class UserTest extends TestCase {
 
+    public static $data;
+
 	/**
 	 * @return array[]
 	 */
 	public function providerDataSuccess()
 	{
 	    return [
-		    ["test@lqdi.net", "q1w2e3r4", "q1w2e3r4"],
-		    ["test@test.com", "qwe123@!?a", "qwe123@!?a"],
+		    ["test%s@lqdi.net", "q1w2e3r4%s"],
+		    ["test%s@test.com", "qwe123@!?a%s"],
 	    ];
 	}
 
@@ -37,15 +39,27 @@ class UserTest extends TestCase {
      * @dataProvider providerDataSuccess
      * @param string $email
      * @param string $password
-     * @param string $confirmation
      */
-    public function testBasicCreate($email, $password, $confirmation)
+    public function testBasicCreate($email, $password)
     {
-       $response = $this->action("POST", "UserController@store",
-            ['email' => $email, 'password' => $password, 'password_confirmation' => $confirmation]);
+        $user = $this->createBasic(sprintf($email, uniqid("_")), $password);
+        $this->assertNotEmpty($user->id);
+    }
+
+    /**
+     * @param string $email
+     * @param string $password
+     * @return User|stdClass
+     */
+    public function createBasic($email, $password)
+    {
+        $response = $this->action("POST", "UserController@store",
+            ['email' => $email, 'password' => $password, 'password_confirmation' => $password]);
         $content = json_decode($response->getContent());
 
         $this->assertNotError($content->error, $content->error ? join("\n",  $content->message) : null);
+
+        return $content->user;
     }
 
     /**
@@ -62,5 +76,29 @@ class UserTest extends TestCase {
 
         $this->assertTrue($content->error);
         $this->assertResponseStatus(406);
+    }
+
+    /**
+     * @dataProvider providerDataSuccess
+     * @param string $email
+     * @param string $password
+     */
+    public function testBasicUpdate($email, $password)
+    {
+        $user = $this->createBasic(sprintf($email, uniqid("_")), $password);
+        $this->assertNotEmpty($user->id);
+        $response = $this->action("PUT", "UserController@update", ['user' => $user->id, 'email' => sprintf($email, uniqid("_"))]);
+        $content = json_decode($response->getContent());
+
+        $this->assertNotError($content->error, $content->error ? join("\n",  $content->message) : null);
+        $this->assertEquals($content->user->id, $user->id);
+        $this->assertNotEquals($content->user->email, $user->email);
+
+        $newPassword = sprintf($password, uniqid("_"));
+        $response = $this->action("PUT", "UserController@update",
+            ['user' => $user->id, 'email' => $email, 'password' => $newPassword, 'password_confirmation' => $newPassword]);
+        $content = json_decode($response->getContent());
+
+        $this->assertNotError($content->error, $content->error ? join("\n",  $content->message) : null);
     }
 }

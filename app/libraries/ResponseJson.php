@@ -33,6 +33,14 @@ class ResponseJson extends \Response {
 		return self::deliver($key, $data);
 	}
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function ok()
+    {
+        return self::json(array('error' => false), 200);
+    }
+
 	/**
 	 * @param string $key
 	 * @param mixed $data

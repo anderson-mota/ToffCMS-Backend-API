@@ -33,7 +33,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 	private function prepareForTests()
 	{
 		Artisan::call('migrate');
-		Artisan::call('db:seed');
+        $this->seed();
 	}
 
     /**
@@ -42,6 +42,6 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
      */
     public function assertNotError($error, $message = null){
         $this->assertFalse($error, $message);
-        $this->assertResponseStatus(200);
+        $this->assertResponseOk();
     }
 }

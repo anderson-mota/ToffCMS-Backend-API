@@ -1,6 +1,6 @@
 <?php
 
-use \app\libraries\ResponseJson;
+use App\Libraries\ResponseJson;
 
 class GalleryItemController extends \BaseController {
 

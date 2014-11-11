@@ -36,7 +36,7 @@ Route::group(array('prefix' => 'v1.0'), function()
 		Route::resource('gallery/item', 'GalleryItemController');
 		Route::resource('gallery', 'GalleryController');
 		Route::resource('navigation', 'NavigationController');
-		Route::resource('settings', 'SettingsController');
+		Route::resource('settings', 'SettingController');
 		Route::resource('user', 'UserController');
 	});
 

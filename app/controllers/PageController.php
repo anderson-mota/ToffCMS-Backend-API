@@ -1,7 +1,7 @@
 <?php
 
 use App\Libraries\ResponseJson;
-use \App\Libraries\SaveRecipe;
+use App\Libraries\SaveRecipe;
 
 class PageController extends \BaseController {
 

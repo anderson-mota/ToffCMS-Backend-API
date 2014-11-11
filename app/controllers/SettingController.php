@@ -1,6 +1,7 @@
 <?php
 
-Use app\libraries\ResponseJson;
+use App\Libraries\ResponseJson;
+use App\Libraries\SaveRecipe;
 
 class SettingController extends \BaseController {
 
@@ -23,4 +24,9 @@ class SettingController extends \BaseController {
 
 		return ResponseJson::success('settings', $return);
 	}
+
+    public function store()
+    {
+        return SaveRecipe::insert(new Setting);
+    }
 }

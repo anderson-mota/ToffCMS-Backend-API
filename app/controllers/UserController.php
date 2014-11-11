@@ -1,6 +1,7 @@
 <?php
 
-use app\libraries\ResponseJson;
+use App\Libraries\ResponseJson;
+use App\Libraries\SaveRecipe;
 
 class UserController extends \BaseController {
 
@@ -14,7 +15,6 @@ class UserController extends \BaseController {
 		//
 	}
 
-
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -22,46 +22,68 @@ class UserController extends \BaseController {
 	 */
 	public function store()
 	{
-		return \App\Libraries\SaveRecipe::insert(new User);
+		return SaveRecipe::insert(new User);
 	}
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int $id
+     * @throws Exception
+     * @return Response
+     */
+    public function show($id)
+    {
+        /** @var User $user */
+        $user = User::find($id);
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$user = User::find($id);
+        if (!$user instanceof User) {
+            throw new Exception("User Does not exists.");
+        }
 
-		return ResponseJson::success('user', $user->toArray());
-	}
+        return ResponseJson::success('user', $user->toArray());
+    }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param integer $id
+     * @throws Exception
+     * @return Response
+     */
+    public function update($id)
+    {
+        /** @var User $user */
+        $user = User::find($id);
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+        if (!$user instanceof User) {
+            throw new Exception("User Does not exists.");
+        }
 
+        return SaveRecipe::update($user);
+    }
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param integer $id
+     * @throws Exception
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id);
 
+        if (!$user instanceof User) {
+            throw new Exception("User Does not exists.");
+        }
 
+        $success = $user->delete();
+
+        if (!$success) {
+            throw new Exception("Fail to remove User.");
+        }
+
+        return ResponseJson::ok();
+    }
 }
