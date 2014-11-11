@@ -7,6 +7,7 @@
  * @property string $title
  * @property string $slug
  * @property string $status
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Gallery_Item[] $items
  */
 class Gallery extends \Eloquent {
 
@@ -47,7 +48,10 @@ class Gallery extends \Eloquent {
 
 	/**
 	 * Delete the gallery and images
+	 *
 	 * @param  integer $id
+	 *
+	 * @return int
 	 */
 	public static function destroy($id)
 	{

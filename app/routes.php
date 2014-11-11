@@ -24,7 +24,7 @@ Route::get('developer', 'DeveloperController@index'); // ToDo: temp
 // Route group for API versioning
 Route::group(array('prefix' => 'v1.0'), function()
 {
-
+	Route::get('settings/{key}', 'SettingController@show');
 	// Admin routes
 	Route::group(array('before' => 'auth.apiKey'), function()
 	{

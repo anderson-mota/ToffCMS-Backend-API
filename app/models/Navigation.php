@@ -13,6 +13,9 @@
  * @property string $type
  * @property integer $parent_id
  * @property integer $order_id
+ * @property-read \Page $page
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Navigation[] $children
+ * @property-read mixed $full_url
  */
 class Navigation extends Eloquent {
 

@@ -26,11 +26,12 @@ use App\Libraries\SaveRecipeInterface;
  * @property String $is_public
  * @property String $created_at
  * @property String $updated_at
+ * @property-read mixed $id
  */
 class Setting extends Eloquent implements SaveRecipeInterface {
 
     protected $table = 'settings';
-    protected $visible = array('key', 'value');
+    protected $visible = array('key', 'value', 'name', 'default', 'available_values', 'description');
 
     public function getIdAttribute($value)
     {

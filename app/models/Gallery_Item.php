@@ -8,6 +8,7 @@
  * @property string $content
  * @property integer $gallery_id
  * @property integer $order_id
+ * @property-read \Gallery $gallery
  */
 class Gallery_Item extends Eloquent {
 
@@ -31,7 +32,10 @@ class Gallery_Item extends Eloquent {
 
 	/**
 	 * Delete an image - both from DB and cache
+	 *
 	 * @param  integer $id
+	 *
+	 * @return int
 	 */
 	public static function destroy($id)
 	{

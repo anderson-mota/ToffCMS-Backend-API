@@ -13,6 +13,7 @@ use App\Libraries\RulesCollection;
  * @property $status
  * @property $language
  * @property $author_id
+ * @property-read \User $author
  */
 class Page extends Eloquent implements SaveRecipeInterface {
 
@@ -50,7 +51,7 @@ class Page extends Eloquent implements SaveRecipeInterface {
 	{
 		$this->title = Input::get('title');
 		$this->slug = Input::get('slug', Str::slug($this->title));
-		$this->content = Input::get('body');
+		$this->content = Input::get('content');
 
 		if ($action == 'insert') {
 			$this->status = Input::get('status', 'draft');
